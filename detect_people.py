@@ -13,7 +13,13 @@ out = cv2.VideoWriter('output.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (64
 
 
 
+count = 0
 while video.isOpened():
+	count += 1
+	if not (count % 25) :
+		print("processed: {}".format(count))
+	#end if
+
 	ret, frame = video.read()
 	frame = cv2.resize(frame, (640,480))
 	if ret:
@@ -29,7 +35,10 @@ while video.isOpened():
 
 		out.write(frame)
 
-		print "processed"
+#		print "processed"
+	else:
+		break
+#end loop
 
 video.release()
 out.release()
