@@ -20,7 +20,11 @@ import numpy as np
 ####### ####### ####### ####### 
 # PARAMETERS
 
-isColor = False
+# if isColor is False, convert to grayscale
+isColor = True
+
+# number of initial frames to discard
+numThrow = 60
 
 ####### ####### ####### ####### 
 
@@ -31,16 +35,42 @@ isColor = False
 print("")
 
 
+# Open input video and get frame rate
 inVid = cv2.VideoCapture(sys.argv[1])
+fps = inVid.get(cv2.cv.CV_CAP_PROP_FPS)
+print("original video fps = {}".format(fps))
+# used with % for output in processing loop :
+fps = int(round(fps))
 
-outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (640,480), isColor)
-outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (640,480), isColor)
+inWidth = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
+inHeight = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
+print("original video resolution = {}x{}".format(inWidth, inHeight))
 
-bgnd = cv2.BackgroundSubtractorMOG()
+
+# Initialize output video
+outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), False)
+outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), isColor)
+
+
+# Throw out first N frames
+count = 0
+while count <= numThrow:
+	# Get a frame
+	ret, frame = inVid.read()
+	count += 1
+#end loop
+
+
+
+#bgnd = cv2.BackgroundSubtractorMOG()
+bgnd = cv2.BackgroundSubtractorMOG2()
+kernSize = 5
+morphKern = np.ones((kernSize, kernSize),np.uint8)
+
 count = 0
 while inVid.isOpened():
 	count += 1
-	if not (count % 25) :
+	if not (count % (fps * 2)) :
 		print("processed: {}".format(count))
 
 	# Get the frame
@@ -55,13 +85,24 @@ while inVid.isOpened():
 			frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 		#end if
 
-		bgmask = bgnd.apply(frame)
+		bgmask = bgnd.apply(frame) 
+		bgopen = cv2.morphologyEx(bgmask, cv2.MORPH_OPEN, morphKern)
 
-		outVid1.write(bgmask)
+#		outVid1.write(bgmask)
+		outVid1.write(bgopen)
 
-		bgmask = np.divide(bgmask, 255)
-#		print np.max(bgmask), np.min(bgmask)
-		frame2 = np.multiply(frame, bgmask)
+		# Scale bgmask to [0, 1] to black out frame
+#		bgmask = np.divide(bgmask, 255)
+		bgopen = np.divide(bgopen, 255)
+		if isColor :
+			frame2 = np.zeros(frame.shape, dtype=np.uint8)
+			for i in xrange(3) :
+#				frame2[:,:,i] = np.multiply(frame[:,:,i], bgmask)
+				frame2[:,:,i] = np.multiply(frame[:,:,i], bgopen)
+		else :
+#			frame2 = np.multiply(frame, bgmask)
+			frame2 = np.multiply(frame, bgopen)
+		#end if
 		outVid2.write(frame2)
 
 	else :
