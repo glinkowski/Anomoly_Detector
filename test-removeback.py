@@ -24,10 +24,10 @@ import numpy as np
 isColor = True
 
 # number of initial frames to discard
-numThrow = 60
+numThrow = 120
 
 # size of the morphology kernel
-kernSize = 2
+kernSize = 3
 
 ####### ####### ####### ####### 
 
