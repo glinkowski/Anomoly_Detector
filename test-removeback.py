@@ -26,6 +26,9 @@ isColor = True
 # number of initial frames to discard
 numThrow = 60
 
+# size of the morphology kernel
+kernSize = 2
+
 ####### ####### ####### ####### 
 
 
@@ -47,9 +50,11 @@ inHeight = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
 print("original video resolution = {}x{}".format(inWidth, inHeight))
 
 
-# Initialize output video
-outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), False)
-outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), isColor)
+# Initialize output video (for linux/mac, h.264 code is MP4V)
+#outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), False)
+#outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), isColor)
+outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (640,480), False)
+outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (640,480), isColor)
 
 
 # Throw out first N frames
@@ -64,7 +69,6 @@ while count <= numThrow:
 
 #bgnd = cv2.BackgroundSubtractorMOG()
 bgnd = cv2.BackgroundSubtractorMOG2()
-kernSize = 5
 morphKern = np.ones((kernSize, kernSize),np.uint8)
 
 count = 0
@@ -88,8 +92,8 @@ while inVid.isOpened():
 		bgmask = bgnd.apply(frame) 
 		bgopen = cv2.morphologyEx(bgmask, cv2.MORPH_OPEN, morphKern)
 
-#		outVid1.write(bgmask)
-		outVid1.write(bgopen)
+		outVid1.write(bgmask)
+#		outVid1.write(bgopen)
 
 		# Scale bgmask to [0, 1] to black out frame
 #		bgmask = np.divide(bgmask, 255)
