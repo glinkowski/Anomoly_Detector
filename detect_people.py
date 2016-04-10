@@ -25,7 +25,7 @@ while video.isOpened():
 	ret, frame = video.read()
 	frame = cv2.resize(frame, (640,480))
 	if ret:
-		if count % 5 == 0:
+		if count % 5 == 0: # process every 5 frames for speed up
 			(rects, weights) = hog.detectMultiScale(frame, winStride=(4,4), padding=(8,8), scale=1.10)
 	
 			rects = np.array([[x,y,x+w,y+h] for (x,y,w,h) in rects])
