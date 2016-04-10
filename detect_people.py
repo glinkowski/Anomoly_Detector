@@ -9,13 +9,15 @@ hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 
-out = cv2.VideoWriter('output.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (640,480), True)
+out = cv2.VideoWriter(sys.argv[2], cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (640,480), True)
 
 
 
 count = 0
 while video.isOpened():
-	count += 1
+	if(count < 450): # used for testing, skipping initial videos
+		count += 1
+		continue
 	if not (count % 25) :
 		print("processed: {}".format(count))
 	#end if
@@ -23,10 +25,11 @@ while video.isOpened():
 	ret, frame = video.read()
 	frame = cv2.resize(frame, (640,480))
 	if ret:
-		(rects, weights) = hog.detectMultiScale(frame, winStride=(4,4), padding=(8,8), scale=1.05)
-
-		rects = np.array([[x,y,x+w,y+h] for (x,y,w,h) in rects])
-		pick = non_max_suppression(rects, probs = None, overlapThresh = 0.65)
+		if count % 5 == 0:
+			(rects, weights) = hog.detectMultiScale(frame, winStride=(4,4), padding=(8,8), scale=1.10)
+	
+			rects = np.array([[x,y,x+w,y+h] for (x,y,w,h) in rects])
+			pick = non_max_suppression(rects, probs = None, overlapThresh = 0.35)
 
 		for (xA, yA, xB, yB) in pick:
 			cv2.rectangle(frame, (xA,yA), (xB,yB), (0,255,0), 2)
@@ -35,9 +38,10 @@ while video.isOpened():
 
 		out.write(frame)
 
-#		print "processed"
 	else:
 		break
+
+	count += 1
 #end loop
 
 video.release()
