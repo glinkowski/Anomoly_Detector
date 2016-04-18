@@ -41,8 +41,13 @@ while video.isOpened():
 				for (xA, yA, xB, yB) in pick:
 					dist_arr = {}
 					centroid = ((xA+xB)/2, (yA + yB)/2)
+					dist_thres = 1e10
 					for cen2 in people_dict:
-						dist_arr[cen2] = distance(centroid, cen2)
+						if distance(centroid,cen2) < dist_thres:
+							 curr_cen = cen2
+			else:
+				for i in range(0, len(pick)):
+					people_dict[i] = ((pick[i][0] + pick[i][2])/2, (pick[i][1]+pick[i][3])/2)
 					
 
 
