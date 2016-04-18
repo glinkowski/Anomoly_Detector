@@ -2,6 +2,11 @@ import numpy as np
 import cv2
 import sys
 from imutils.object_detection import non_max_suppression
+from math import sqrt
+
+def distance(cen1, cen2):
+	return math.sqrt((cen1[0] - cen2[0])**2 + (cen1[1] - cen2[1])**2)
+
 
 video = cv2.VideoCapture(sys.argv[1])
 
@@ -11,7 +16,7 @@ hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 out = cv2.VideoWriter(sys.argv[2], cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (640,480), True)
 
-
+people_dict = {}
 
 count = 0
 while video.isOpened():
@@ -30,7 +35,18 @@ while video.isOpened():
 	
 			rects = np.array([[x,y,x+w,y+h] for (x,y,w,h) in rects])
 			pick = non_max_suppression(rects, probs = None, overlapThresh = 0.35)
+			
+			# extract motion vectors if not first frame
+			if count != 0:
+				for (xA, yA, xB, yB) in pick:
+					dist_arr = {}
+					centroid = ((xA+xB)/2, (yA + yB)/2)
+					for cen2 in people_dict:
+						dist_arr[cen2] = distance(centroid, cen2)
+					
 
+
+			prev_pick = pick
 		for (xA, yA, xB, yB) in pick:
 			cv2.rectangle(frame, (xA,yA), (xB,yB), (0,255,0), 2)
 
