@@ -29,6 +29,11 @@ numThrow = 120
 # size of the morphology kernel
 kernSize = 3
 
+# resize the video ?
+resize = True
+rWidth = 640
+rHeight = 480
+
 ####### ####### ####### ####### 
 
 
@@ -53,9 +58,14 @@ print("original video resolution = {}x{}".format(inWidth, inHeight))
 # Initialize output video (for linux/mac, h.264 code is MP4V)
 #outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), False)
 #outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), isColor)
-outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (640,480), False)
-outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (640,480), isColor)
 
+if resize :
+	outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (rWidth,rHeight), False)
+	outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (rWidth,rHeight), isColor)
+else :
+	outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (inWidth,inHeight), False)
+	outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (inWidth,inHeight), isColor)
+#end if	
 
 # Throw out first N frames
 count = 0
@@ -83,7 +93,8 @@ while inVid.isOpened():
 
 	if ret:
 		# Resize to smaller scale
-		frame = cv2.resize(frame, (640,480))
+		if resize :
+			frame = cv2.resize(frame, (640,480))
 		# Convert to grayscale
 		if not isColor :
 			frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
