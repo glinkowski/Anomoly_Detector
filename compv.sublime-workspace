@@ -1,0 +1,567 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"CV_rgb",
+				"CV_RGB2HSV"
+			],
+			[
+				"OBJ",
+				"OBJS3"
+			],
+			[
+				"cen",
+				"centroid"
+			],
+			[
+				"cent",
+				"centroids"
+			],
+			[
+				"O",
+				"OBJS"
+			],
+			[
+				"app",
+				"applyBlur"
+			],
+			[
+				"outV",
+				"outVid2"
+			],
+			[
+				"write",
+				"writeRankedPaths"
+			],
+			[
+				"use",
+				"useBinning"
+			],
+			[
+				"pa",
+				"pathlist"
+			],
+			[
+				"verbo",
+				"verbose"
+			],
+			[
+				"si",
+				"sIndices"
+			],
+			[
+				"rs",
+				"rSamps"
+			],
+			[
+				"rsamp",
+				"rSampArrays"
+			],
+			[
+				"parti",
+				"partitionSample"
+			],
+			[
+				"verify",
+				"verifyDirectory"
+			],
+			[
+				"text",
+				"textDelim"
+			],
+			[
+				"fo",
+				"format"
+			],
+			[
+				"sima",
+				"simArray"
+			],
+			[
+				"topp",
+				"topPaths"
+			],
+			[
+				"zero",
+				"zeros"
+			],
+			[
+				"rank",
+				"ranker"
+			],
+			[
+				"dir",
+				"dirSet"
+			],
+			[
+				"odi",
+				"oDirFull"
+			],
+			[
+				"savet",
+				"savetxt"
+			],
+			[
+				"is",
+				"isfile"
+			],
+			[
+				"perc",
+				"percentile"
+			],
+			[
+				"createm",
+				"createMPLengthTwo"
+			],
+			[
+				"createmp",
+				"createMPLengthOne"
+			],
+			[
+				"sna",
+				"sNames"
+			],
+			[
+				"et",
+				"et"
+			],
+			[
+				"rst",
+				"rstrip"
+			],
+			[
+				"getPa",
+				"getPathCountList"
+			],
+			[
+				"rand",
+				"randSamps"
+			],
+			[
+				"getp",
+				"getPathCountList"
+			],
+			[
+				"a",
+				"a"
+			],
+			[
+				"readF",
+				"readFileAsIndexDict"
+			],
+			[
+				"read",
+				"readGeneFile"
+			],
+			[
+				"fn",
+				"fname"
+			],
+			[
+				"saveM",
+				"saveMatrixText"
+			],
+			[
+				"n",
+				"name"
+			],
+			[
+				"mn",
+				"mNum"
+			],
+			[
+				"savem",
+				"saveMatrixNumpy"
+			],
+			[
+				"prim",
+				"primNames"
+			],
+			[
+				"mat",
+				"saveMatrixList"
+			],
+			[
+				"matrix",
+				"matrixNames"
+			],
+			[
+				"matri",
+				"matrixList"
+			],
+			[
+				"out",
+				"outname"
+			],
+			[
+				"mna",
+				"mname"
+			],
+			[
+				"term",
+				"term_lg"
+			],
+			[
+				"keep",
+				"keepEdges"
+			],
+			[
+				"ind",
+				"indices"
+			],
+			[
+				"kee",
+				"keepGenes"
+			],
+			[
+				"ked",
+				"kEdgeSet"
+			],
+			[
+				"ke",
+				"kEdges"
+			],
+			[
+				"ed",
+				"edgeArray"
+			],
+			[
+				"nod",
+				"nodeDT"
+			],
+			[
+				"check",
+				"checkDict"
+			],
+			[
+				"che",
+				"checkSet"
+			],
+			[
+				"indi",
+				"indirEdges"
+			],
+			[
+				"_",
+				"_DN"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"file": "test-removeback.py",
+			"settings":
+			{
+				"buffer_size": 3283,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"console":
+	{
+		"height": 0.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/greg/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
+		"/home/greg/.cache/.fr-JhhdGc/split-channels/src/main.cpp",
+		"/home/greg/420seg/Android-jni_part.cpp",
+		"/home/greg/420seg/segmentation.sublime-project",
+		"/home/greg/420seg/build.sh",
+		"/home/greg/420seg/.gitignore",
+		"/home/greg/metapath/miscTest.py",
+		"/home/greg/compv/detect_people.py",
+		"/home/greg/compv/detpeep.py",
+		"/home/greg/compv/nms.py",
+		"/home/greg/compv/.gitignore",
+		"/home/greg/compv/getclip.py",
+		"/home/greg/metapath/visHeatmap-kvsh.py",
+		"/home/greg/metapath/mpAnalysis.sublime-project",
+		"/home/greg/metapath/mpFindPaths02.py",
+		"/home/greg/metapath/mpFindFuncs.py",
+		"/home/greg/metapath/.gitignore",
+		"/home/greg/metapath/networks/fakeNtwk00.keep.txt",
+		"/home/greg/metapath/networks/fakeNtwk01.keep.txt",
+		"/home/greg/metapath/networks/hsa_dghmw.keep.txt",
+		"/home/greg/metapath/preProcFuncs.py",
+		"/home/greg/metapath/preProcessing.py",
+		"/home/greg/metapath/networks/hsa_dghmw.edge.txt",
+		"/home/greg/metapath/untitled.sublime-project",
+		"/home/greg/metapath/mpPrediction01.py",
+		"/home/greg/metapath/preProcessCont.py",
+		"/home/greg/metapath/mpfuncs.py",
+		"/home/greg/metapath/demo01.py",
+		"/home/greg/metapath/mp02-old-a - Copy.py",
+		"/home/greg/metapath/fakeNtwk00.keep.txt",
+		"/home/greg/metapath/preProc03.py",
+		"/home/greg/metapath/preProc02.py",
+		"/home/greg/metapath/preProc00.py",
+		"/home/greg/metapath/preProc01.py",
+		"/home/greg/metapath/mp03.py",
+		"/home/greg/metapath/mp02-2.py",
+		"/home/greg/metapath/mp01.py",
+		"/home/greg/metapath/mp00.py",
+		"/home/greg/Dropbox/ece445/code/audio/fix_fft.cpp"
+	],
+	"find":
+	{
+		"height": 36.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"* imThresh",
+			"imThresh->",
+			"* imThresh",
+			"imThreshLAB",
+			"imThreshLab",
+			"pixLabels",
+			"imOrig",
+			"winner",
+			"comment",
+			"for(",
+			"char",
+			"convertYUVtoARGB",
+			"rgb",
+			"fnZPad",
+			"keyZPad",
+			"nameOutpu",
+			"doesn't exist",
+			"partitions",
+			"getSampleList",
+			"readSampleFiles",
+			"nameO",
+			"getPathMatrix",
+			"print ",
+			"loseGene",
+			"genes",
+			"getPathMatrix",
+			"writeModEdgeFilePlus",
+			"createrandomsa",
+			"removeInvertedPaths",
+			"mpd",
+			"numRand",
+			"rand",
+			"opath",
+			"spath",
+			"sname",
+			"epath",
+			"ename",
+			"opath",
+			"nameOutputFile",
+			"numtopk",
+			"nameout",
+			"calculateStatistics",
+			"readFileasli",
+			"readsamplef",
+			"readFileAsIndexDict",
+			"readFileasin",
+			"saveGeneFile",
+			"checkGenesInNetwork",
+			"getSampleList",
+			".gz",
+			"getPathMatrix",
+			".gz",
+			"gma",
+			"genemapp",
+			"mdic",
+			"applykeep",
+			"saveKeyFile",
+			"pList",
+			"readKeyFile",
+			"readKeyFil",
+			"mpList",
+			"removeI",
+			"getPathCountOne",
+			"error che",
+			"thisM = np.zeros([numG,numG]",
+			"thisM = np.zeros([numG,numG])",
+			"createMa",
+			"getPathMa",
+			"saveMatrixN",
+			"isdir",
+			"mpDict",
+			"calculatest",
+			"keyzp",
+			"getPath",
+			"readSamp",
+			"saveMatrixNumpy",
+			" - ",
+			"Returns:",
+			"Input:",
+			"createModEdgeFileName",
+			"np",
+			"checkSet",
+			"saveMatrixText",
+			"mDict",
+			"saveMatrixNumpy",
+			"zpad",
+			"writeMod",
+			"path",
+			"geneDict",
+			"edgeArray",
+			"nodeDict",
+			"wFlt",
+			"geneSet",
+			"delimiter"
+		],
+		"highlight": true,
+		"in_selection": true,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"imThresh",
+			"imThresh.",
+			"imThresh",
+			"* imThreshLab",
+			"imKMeans",
+			"for (",
+			"float",
+			"fnOutputZPad",
+			"fnMatrixZPad",
+			"nRandSamp",
+			"oPath",
+			"sPath",
+			"sName",
+			"ePath",
+			"eName",
+			"readKeyFilePP",
+			"thisM = np.zeros([numG,numG], dtype=dt",
+			"thisM = np.zeros([numG,numG], dtype=dt)",
+			": ",
+			"Returns ----",
+			"Input ----",
+			"weightFlt"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "test-removeback.py",
+					"settings":
+					{
+						"buffer_size": 3283,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								662,
+								662
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 85.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 500.0,
+		"selected_items":
+		[
+		],
+		"width": 380.0
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 159.0,
+	"status_bar_visible": true
+}
