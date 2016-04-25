@@ -24,13 +24,13 @@ import numpy as np
 isColor = True
 
 # number of initial frames to discard
-numThrow = 120
+numThrow = 20 * 30 	# 120
 
 # size of the morphology kernel
-kernSize = 3
+kernSize = 4
 
 # resize the video ?
-resize = True
+resize = False
 rWidth = 640
 rHeight = 480
 
