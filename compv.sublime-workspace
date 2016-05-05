@@ -255,7 +255,39 @@
 			"file": "test-removeback.py",
 			"settings":
 			{
-				"buffer_size": 3283,
+				"buffer_size": 3289,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "cvtest.py~",
+			"settings":
+			{
+				"buffer_size": 129,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "nms.py",
+			"settings":
+			{
+				"buffer_size": 2097,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "detect_people.py",
+			"settings":
+			{
+				"buffer_size": 2633,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": ".gitignore",
+			"settings":
+			{
+				"buffer_size": 615,
 				"line_ending": "Unix"
 			}
 		}
@@ -284,17 +316,19 @@
 	},
 	"file_history":
 	[
+		"/home/greg/compv/.gitignore",
+		"/home/greg/compv/compv.sublime-project",
+		"/home/greg/compv/compv.sublime-workspace",
+		"/home/greg/420seg/segmentation.sublime-project",
 		"/home/greg/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
 		"/home/greg/.cache/.fr-JhhdGc/split-channels/src/main.cpp",
 		"/home/greg/420seg/Android-jni_part.cpp",
-		"/home/greg/420seg/segmentation.sublime-project",
 		"/home/greg/420seg/build.sh",
 		"/home/greg/420seg/.gitignore",
 		"/home/greg/metapath/miscTest.py",
 		"/home/greg/compv/detect_people.py",
 		"/home/greg/compv/detpeep.py",
 		"/home/greg/compv/nms.py",
-		"/home/greg/compv/.gitignore",
 		"/home/greg/compv/getclip.py",
 		"/home/greg/metapath/visHeatmap-kvsh.py",
 		"/home/greg/metapath/mpAnalysis.sublime-project",
@@ -473,7 +507,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -481,15 +515,15 @@
 					"file": "test-removeback.py",
 					"settings":
 					{
-						"buffer_size": 3283,
+						"buffer_size": 3289,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								662,
-								662
+								668,
+								668
 							]
 						],
 						"settings":
@@ -498,7 +532,113 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 85.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "cvtest.py~",
+					"settings":
+					{
+						"buffer_size": 129,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "nms.py",
+					"settings":
+					{
+						"buffer_size": 2097,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								557,
+								557
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "detect_people.py",
+					"settings":
+					{
+						"buffer_size": 2633,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": ".gitignore",
+					"settings":
+					{
+						"buffer_size": 615,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -555,13 +695,17 @@
 		"height": 500.0,
 		"selected_items":
 		[
+			[
+				"",
+				"/home/greg/420seg/segmentation.sublime-project"
+			]
 		],
 		"width": 380.0
 	},
 	"show_minimap": true,
-	"show_open_files": false,
+	"show_open_files": true,
 	"show_tabs": true,
 	"side_bar_visible": true,
-	"side_bar_width": 159.0,
+	"side_bar_width": 172.0,
 	"status_bar_visible": true
 }

@@ -1,0 +1,19 @@
+{
+	"folders":
+	[
+	   {
+			"path": "/home/greg/compv",
+			"file_exclude_patterns": ["*.MTS", "*.avi", "*.mp4"]
+		}
+	],
+	"settings":
+	{
+
+		"color_scheme": "Packages/Color Scheme - Default/Cobalt.tmTheme",
+
+		"tab_size": 4,
+		"translate_tabs_to_spaces": false,
+
+		"highlight_modified_tabs": true
+	}
+}
