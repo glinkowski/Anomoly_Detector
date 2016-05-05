@@ -23,6 +23,12 @@ import numpy as np
 # if isColor is False, convert to grayscale
 isColor = True
 
+# time to discard at the beginning (in min)
+timeThrow = 1.75
+
+# time to keep in final video (in sec)
+timeKeep = 0.5
+
 # number of initial frames to discard
 numThrow = 45 * 30 	# 120
 
@@ -48,7 +54,11 @@ inVid = cv2.VideoCapture(sys.argv[1])
 fps = inVid.get(cv2.cv.CV_CAP_PROP_FPS)
 print("original video fps = {}".format(fps))
 # used with % for output in processing loop :
-fps = int(round(fps))
+if fps < 121 :
+	fps = int(round(fps))
+else :	# to handle fps = NaN
+	fps = 30
+#end if
 
 inWidth = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
 inHeight = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
@@ -67,7 +77,9 @@ else :
 	outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (inWidth,inHeight), isColor)
 #end if	
 
+
 # Throw out first N frames
+numThrow = int(round(timeThrow * fps)) * 60
 count = 0
 while count <= numThrow:
 	# Get a frame
@@ -82,8 +94,12 @@ bgnd = cv2.BackgroundSubtractorMOG2()
 morphKern = np.ones((kernSize, kernSize),np.uint8)
 
 count = 0
+numKeep = int(round(timeKeep * fps)) * 60
 while inVid.isOpened():
 	count += 1
+	if (count > numKeep) :
+		break
+
 	if not (count % (fps * 2)) :
 		print("processed: {}".format(count))
 
