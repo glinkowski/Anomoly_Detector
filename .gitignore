@@ -9,7 +9,7 @@ originals*/*
 *.mp4
 *.MTS
 *.avi
-*.sublime-project
+*.sublime-workspace
 
 
 # Compiled source #
