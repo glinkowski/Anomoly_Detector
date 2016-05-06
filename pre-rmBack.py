@@ -6,9 +6,12 @@
 # Testing the idea of subtracting out the background
 #	NOTE: the background should be static
 # 
-# Creates ----
-#	rmBack01.avi: the binary back/fore-ground mask
-#	rmBack02.avi: the masked video
+# Use ----
+#	...$ python pre-rmBack.py <input video>
+#
+# Output ----
+#	<invideo>-rmBack01.avi: the binary back/fore-ground mask
+#	<invideo>-rmBack02-k<kernel>.avi: the masked video
 # ---------------------------------------------------------
 
 import cv2
@@ -20,26 +23,23 @@ import numpy as np
 ####### ####### ####### ####### 
 # PARAMETERS
 
-# if isColor is False, convert to grayscale
-isColor = True
-
 # time to discard at the beginning (in min)
-timeThrow = 1.75
-
+timeThrow = 0.0
 # time to keep in final video (in sec)
-timeKeep = 0.5
-
-# number of initial frames to discard
-numThrow = 45 * 30 	# 120
+timeKeep = 0.0
 
 # size of the morphology kernel
-kernSize = 7
+kernSize = 5
 
+# if isColor is False, convert to grayscale
+isColor = True
 # resize the video ?
 resize = False
 rWidth = 640
 rHeight = 480
 
+compression = cv2.cv.CV_FOURCC('M','P','4','V')
+#compression = cv2.cv.CV_FOURCC('M','J','P','G')
 ####### ####### ####### ####### 
 
 
@@ -69,12 +69,17 @@ print("original video resolution = {}x{}".format(inWidth, inHeight))
 #outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), False)
 #outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), isColor)
 
+outPrefix = sys.argv[1].split('.')[0]
+#print sys.argv[1].split('.')
+#print outPrefix
+outName1 = outPrefix + '-rmBack01.avi'
+outName2 = outPrefix + '-rmBack02-k{}.avi'.format(kernSize)
 if resize :
-	outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (rWidth,rHeight), False)
-	outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (rWidth,rHeight), isColor)
+	outVid1 = cv2.VideoWriter(outName1, compression, 30, (rWidth,rHeight), False)
+	outVid2 = cv2.VideoWriter(outName2, compression, 30, (rWidth,rHeight), isColor)
 else :
-	outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (inWidth,inHeight), False)
-	outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','P','4','V'), 30, (inWidth,inHeight), isColor)
+	outVid1 = cv2.VideoWriter(outName1, compression, 30, (inWidth,inHeight), False)
+	outVid2 = cv2.VideoWriter(outName2, compression, 30, (inWidth,inHeight), isColor)
 #end if	
 
 
@@ -91,13 +96,14 @@ while count <= numThrow:
 
 #bgnd = cv2.BackgroundSubtractorMOG()
 bgnd = cv2.BackgroundSubtractorMOG2()
+#bgnd = cv2.BackgroundSubtractorGMG()
 morphKern = np.ones((kernSize, kernSize),np.uint8)
 
 count = 0
 numKeep = int(round(timeKeep * fps)) * 60
 while inVid.isOpened():
 	count += 1
-	if (count > numKeep) :
+	if (numKeep > 3) and (count > numKeep) :
 		break
 
 	if not (count % (fps * 2)) :
@@ -116,7 +122,7 @@ while inVid.isOpened():
 			frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 		#end if
 
-		bgmask = bgnd.apply(frame) 
+		bgmask = bgnd.apply(frame, learningRate=0.003) 
 		bgopen = cv2.morphologyEx(bgmask, cv2.MORPH_OPEN, morphKern)
 
 		outVid1.write(bgmask)
