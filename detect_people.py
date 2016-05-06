@@ -15,34 +15,53 @@ def centroid_calc(rect):
 	return ((rect[0] + rect[2])/2, (rect[1]+rect[3])/2)
 
 
-video = cv2.VideoCapture(sys.argv[1])
+inVid = cv2.VideoCapture(sys.argv[1])
+inWidth = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
+inHeight = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
+
 
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
+
+skipFPS = 10		# how many fps to keep
 outPrefix = sys.argv[1].split('-')[0]
 outVName = outPrefix + '-tracking.avi'
-out = cv2.VideoWriter(outVName, cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), True)
+out = cv2.VideoWriter(outVName, cv2.cv.CV_FOURCC('M','P','4','V'), skipFPS, (inWidth,inHeight), True)
 #out = cv2.VideoWriter(sys.argv[2], cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (640,480), True)
+
 
 people_dict = {}
 prev_pick = []
 people_history  = {}
 count = 0
+skipCount = 0
+skipStop = int(round(30 / skipFPS))
 motion_vectors = []
-while video.isOpened():
-	if(count < 575): # used for testing, skipping initial videos
-		ret, frame = video.read()
-		count += 1
+while inVid.isOpened():
+
+	# Skipping so many frames per second
+	if (skipCount < skipStop) :
+		skipCount += 1
 		continue
+	skipCount = 0
+
+	# # Skip initial frames (as bgsubtract sets up)
+	#  if(count < 30): 
+	#  	ret, frame = video.read()
+	#  	count += 1
+	#  	continue
+
 	if not (count % 25) :
 		print("processed: {}".format(count))
 	#end if
 
-	ret, frame = video.read()
+	ret, frame = inVid.read()
 	
-#	frame = cv2.resize(frame, (640,480))
 	if ret:
+
+#		frame = cv2.resize(frame, (640,480))
+
 		if count % 5 == 0: # process every 5 frames for speed up
 			(rects, weights) = hog.detectMultiScale(frame, winStride=(4,4), padding=(8,8), scale=1.10)
 	
@@ -87,11 +106,11 @@ while video.isOpened():
 					motion_vectors.append(center)
 
 					# calculate magnitude
-					mag = magnitude(displacement[0], displacement[1])
+					mag = magnitude(displacement)
 					motion_vectors.append(mag)
 
 					# calculate angle
-					angle = np.arctan2(displacement[1], displacemnet[0])
+					angle = np.arctan2(displacement[1], displacement[0])
 					motion_vectors.append(angle)
 
 					# delete previous value, as we have found its match
@@ -113,8 +132,10 @@ while video.isOpened():
 	count += 1
 #end loop
 
-video.release()
+inVid.release()
 out.release()
+
+print motion_vectors
 
 outFName = outPrefix + '-vectors.txt'
 #with open(sys.argv[3], 'w') as f:
