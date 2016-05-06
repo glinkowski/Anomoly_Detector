@@ -51,12 +51,12 @@ mvColor = (0, 192, 255)
 print("")
 
 
-if len(sys.argv < 2) :
+if len(sys.argv) < 2 :
 	print("ERROR: $ python pre-rmBack.py <video path & name>")
 #end if
 
 inVidFile = sys.argv[1]
-mvFile = inVidFile[0:-3] + '-vectors.txt'
+mvFile = inVidFile[0:-4] + '-vectors.txt'
 
 
 # Skip first N frames of video, then keep a still
@@ -97,7 +97,8 @@ cv2.destroyAllWindows()
 
 
 # Output the image
-cv2.imwrite( inVidDir + inVidName.split('.')[0] + '-still.png', stillFrame )
+#cv2.imwrite( inVidDir + inVidName.split('.')[0] + '-still.png', stillFrame )
+cv2.imwrite( inVidFile[0:-4] + '-still.png', stillFrame )
 
 
 print("\nDone.\n")

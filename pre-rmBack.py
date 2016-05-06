@@ -69,7 +69,9 @@ print("original video resolution = {}x{}".format(inWidth, inHeight))
 #outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), False)
 #outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), isColor)
 
-outPrefix = sys.argv[1].split('.')[0]
+
+#outPrefix = sys.argv[1].split('.')[0]
+outPrefix = sys.argv[1][0:-4]
 #print sys.argv[1].split('.')
 #print outPrefix
 outName1 = outPrefix + '-rmBack01.avi'
