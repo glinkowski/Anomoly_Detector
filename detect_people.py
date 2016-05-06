@@ -7,6 +7,10 @@ from math import sqrt
 def distance(cen1, cen2):
 	return sqrt((cen1[0] - cen2[0])**2 + (cen1[1] - cen2[1])**2)
 
+def magnitude(vec):
+	return sqrt(vec[0]**2 + vec[1]**2)
+
+
 def centroid_calc(rect):
 	return ((rect[0] + rect[2])/2, (rect[1]+rect[3])/2)
 
@@ -76,15 +80,28 @@ while video.isOpened():
 					min_rect = np.argmin(dists)
 
 					# find motion vector
-					motion_vectors.append((center[0] - centroid_calc(prev_pick[min_rect])[0],center[1] - centroid_calc(prev_pick[min_rect])[1]))
+					displacement = (center[0] - centroid_calc(prev_pick[min_rect])[0],center[1] - centroid_calc(prev_pick[min_rect])[1])
+					motion_vectors.append(displacement)
 					
+					# append centroid
+					motion_vectors.append(center)
+
+					# calculate magnitude
+					mag = magnitude(displacement[0], displacement[1])
+					motion_vectors.append(mag)
+
+					# calculate angle
+					angle = np.arctan2(displacement[1], displacemnet[0])
+					motion_vectors.append(angle)
+
 					# delete previous value, as we have found its match
 					np.delete(prev_pick, min_rect)
 
 		# set current to previous
 		prev_pick = pick
-#		for (xA, yA, xB, yB) in pick:
-#			cv2.rectangle(frame, (xA,yA), (xB,yB), (0,255,0), 2)
+		# to save time while running, comment out
+		for (xA, yA, xB, yB) in pick:
+			cv2.rectangle(frame, (xA,yA), (xB,yB), (0,255,0), 2)
 
 		
 
@@ -103,5 +120,5 @@ outFName = outPrefix + '-vectors.txt'
 #with open(sys.argv[3], 'w') as f:
 with open(outFName, 'w') as f:
 	for i in range(0, len(motion_vectors)):
-		f.write("{0},{1}\n".format(motion_vectors[i][0], motion_vectors[i][1]))
+		f.write("{0},{1},{2},{3},{4}\n".format(motion_vectors[i][0], motion_vectors[i][1],motion_vectors[i][2],motion_vectors[i][3],motion_vectors[i][4]))
 f.close()
