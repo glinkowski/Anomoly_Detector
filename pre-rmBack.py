@@ -1,5 +1,5 @@
 # ---------------------------------------------------------
-# author: Greg Linkowski
+# authors: Mohammad Saad & Greg Linkowski
 # project: Anomoly Detection
 #		for Computer Vision final project
 # 
