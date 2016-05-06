@@ -1,8 +1,31 @@
+# ---------------------------------------------------------
+# authors: Mohammad Saad & Greg Linkowski
+# project: Anomoly Detection
+#		for Computer Vision final project
+# 
+# After background subtraction, run HOG to detect people.
+#	Track those people to create motion vectors. Save the
+#	video with rectangles overlaid. Save the vectors to
+#	a text file (x, y, magnitude, angle).
+# 
+# Input ----
+#	processed video of location (background removed)
+#
+# Output ----
+#	processed video with rectangles overlaid
+#	text file of vectors
+# ---------------------------------------------------------
+
 import numpy as np
 import cv2
 import sys
 from imutils.object_detection import non_max_suppression
 from math import sqrt
+
+
+
+####### ####### ####### ####### 
+# Helper Function Declarations
 
 def distance(cen1, cen2):
 	return sqrt((cen1[0] - cen2[0])**2 + (cen1[1] - cen2[1])**2)
@@ -14,6 +37,26 @@ def magnitude(vec):
 def centroid_calc(rect):
 	return ((rect[0] + rect[2])/2, (rect[1]+rect[3])/2)
 
+####### ####### ####### ####### 
+
+
+
+####### ####### ####### ####### 
+# PARAMETERS
+
+# Set slower FPS -- skip X frames per second
+outFPS = 3		# the final fps (should divide 30)
+
+# Output video compression code
+compression = cv2.cv.CV_FOURCC('M','P','4','V')
+#compression = cv2.cv.CV_FOURCC('M','J','P','G')
+
+# Output color of rectangles drawn on video
+rectColor = (0,255,0)
+
+####### ####### ####### ####### 
+
+
 
 inVid = cv2.VideoCapture(sys.argv[1])
 inWidth = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
@@ -24,10 +67,10 @@ hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 
-skipFPS = 6		# how many fps to keep
+#outFPS = 6		# how many fps to keep
 outPrefix = sys.argv[1].split('-')[0]
 outVName = outPrefix + '-tracking.avi'
-out = cv2.VideoWriter(outVName, cv2.cv.CV_FOURCC('M','P','4','V'), skipFPS, (inWidth,inHeight), True)
+out = cv2.VideoWriter(outVName, compression, outFPS, (inWidth,inHeight), True)
 #out = cv2.VideoWriter(sys.argv[2], cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (640,480), True)
 
 
@@ -36,7 +79,7 @@ prev_pick = []
 people_history  = {}
 count = 0
 skipCount = 0
-skipStop = int(round(30 / skipFPS))
+skipStop = int(round(30 / outFPS))
 #motion_vectors = []
 mvList = list()
 mvRow = list()
@@ -65,68 +108,68 @@ while inVid.isOpened():
 
 #		frame = cv2.resize(frame, (640,480))
 
-		if count % 5 == 0: # process every 5 frames for speed up
-			(rects, weights) = hog.detectMultiScale(frame, winStride=(4,4), padding=(8,8), scale=1.10)
-	
-			rects = np.array([[x,y,x+w,y+h] for (x,y,w,h) in rects])
-			pick = non_max_suppression(rects, probs = None, overlapThresh = 0.65)
-			
-			# extract motion vectors if there are previous picks
+#		 if count % 5 == 0: # process every 5 frames for speed up
+		(rects, weights) = hog.detectMultiScale(frame, winStride=(4,4), padding=(8,8), scale=1.10)
 
-			# print len(prev_pick)
-			if(len(prev_pick) != 0):
-				for i in range(0, len(pick)):
-					
+		rects = np.array([[x,y,x+w,y+h] for (x,y,w,h) in rects])
+		pick = non_max_suppression(rects, probs = None, overlapThresh = 0.65)
+		
+		# extract motion vectors if there are previous picks
 
-					# initialize distance array
-					dists = []
+		# print len(prev_pick)
+		if(len(prev_pick) != 0):
+			for i in range(0, len(pick)):
+				
 
-					# calculate centroid of current person
-					center = centroid_calc(pick[i])
+				# initialize distance array
+				dists = []
 
-					# print center
+				# calculate centroid of current person
+				center = centroid_calc(pick[i])
 
-					print "center: {0},{1}".format(center[0], center[1])
-					# if no other picks left in prev_pick, skip (i.e. we have a new person)
-					if(len(prev_pick) == 0):
-						continue
-					
-					# loop through prev pick, calculate centroids and distances
-					for j in range(0, len(prev_pick)):
-						prev_center = centroid_calc(prev_pick[j])
-						dists.append(distance(center, prev_center))
+				# print center
 
-					# find prev square with minimum distance
-					dists = np.array(dists)
-					min_rect = np.argmin(dists)
+				print "center: {0},{1}".format(center[0], center[1])
+				# if no other picks left in prev_pick, skip (i.e. we have a new person)
+				if(len(prev_pick) == 0):
+					continue
+				
+				# loop through prev pick, calculate centroids and distances
+				for j in range(0, len(prev_pick)):
+					prev_center = centroid_calc(prev_pick[j])
+					dists.append(distance(center, prev_center))
 
-					# find motion vector
-					displacement = (center[0] - centroid_calc(prev_pick[min_rect])[0],center[1] - centroid_calc(prev_pick[min_rect])[1])
+				# find prev square with minimum distance
+				dists = np.array(dists)
+				min_rect = np.argmin(dists)
+
+				# find motion vector
+				displacement = (center[0] - centroid_calc(prev_pick[min_rect])[0],center[1] - centroid_calc(prev_pick[min_rect])[1])
 #					motion_vectors.append(displacement)
-					
-					# append centroid
+				
+				# append centroid
 #					motion_vectors.append(center)
 
-					# calculate magnitude
-					mag = magnitude(displacement)
+				# calculate magnitude
+				mag = magnitude(displacement)
 #					motion_vectors.append(mag)
 
-					# calculate angle
-					angle = np.arctan2(displacement[1], displacement[0])
+				# calculate angle
+				angle = np.arctan2(displacement[1], displacement[0])
 #					motion_vectors.append(angle)
 
-					# delete previous value, as we have found its match
-					np.delete(prev_pick, min_rect)
+				# delete previous value, as we have found its match
+				np.delete(prev_pick, min_rect)
 
-					# Save this motion vector to list
-					mvRow = [prev_center[0], prev_center[1], mag, angle, center[0], center[1]]
-					mvList.append(mvRow)
+				# Save this motion vector to list
+				mvRow = [prev_center[0], prev_center[1], mag, angle, center[0], center[1]]
+				mvList.append(mvRow)
 
 		# set current to previous
 		prev_pick = pick
 		# to save time while running, comment out
 		for (xA, yA, xB, yB) in pick:
-			cv2.rectangle(frame, (xA,yA), (xB,yB), (0,255,0), 2)
+			cv2.rectangle(frame, (xA,yA), (xB,yB), rectColor, 2)
 
 
 		out.write(frame)
