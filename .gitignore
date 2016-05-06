@@ -10,6 +10,7 @@ originals*/*
 *.MTS
 *.avi
 *.sublime-workspace
+compv.sublime-workspace
 
 
 # Compiled source #
