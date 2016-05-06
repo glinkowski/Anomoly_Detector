@@ -16,8 +16,10 @@ video = cv2.VideoCapture(sys.argv[1])
 hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
-
-out = cv2.VideoWriter(sys.argv[2], cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (640,480), True)
+outPrefix = sys.argv[1].split('-')[0]
+outVName = outPrefix + '-tracking.avi'
+out = cv2.VideoWriter(outVName, cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), True)
+#out = cv2.VideoWriter(sys.argv[2], cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (640,480), True)
 
 people_dict = {}
 prev_pick = []
@@ -35,7 +37,7 @@ while video.isOpened():
 
 	ret, frame = video.read()
 	
-	# frame = cv2.resize(frame, (640,480))
+#	frame = cv2.resize(frame, (640,480))
 	if ret:
 		if count % 5 == 0: # process every 5 frames for speed up
 			(rects, weights) = hog.detectMultiScale(frame, winStride=(4,4), padding=(8,8), scale=1.10)
@@ -81,8 +83,8 @@ while video.isOpened():
 
 		# set current to previous
 		prev_pick = pick
-		for (xA, yA, xB, yB) in pick:
-			cv2.rectangle(frame, (xA,yA), (xB,yB), (0,255,0), 2)
+#		for (xA, yA, xB, yB) in pick:
+#			cv2.rectangle(frame, (xA,yA), (xB,yB), (0,255,0), 2)
 
 		
 
@@ -97,7 +99,9 @@ while video.isOpened():
 video.release()
 out.release()
 
-with open(sys.argv[3], 'w') as f:
+outFName = outPrefix + '-vectors.txt'
+#with open(sys.argv[3], 'w') as f:
+with open(outFName, 'w') as f:
 	for i in range(0, len(motion_vectors)):
 		f.write("{0},{1}\n".format(motion_vectors[i][0], motion_vectors[i][1]))
 f.close()
