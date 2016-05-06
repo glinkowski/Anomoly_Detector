@@ -4,6 +4,50 @@
 		"selected_items":
 		[
 			[
+				"still",
+				"stillFrame"
+			],
+			[
+				"inv",
+				"inVidFile"
+			],
+			[
+				"inV",
+				"inVidName"
+			],
+			[
+				"ski",
+				"skipCount"
+			],
+			[
+				"co",
+				"continue"
+			],
+			[
+				"fps",
+				"fpsSkip"
+			],
+			[
+				"motion",
+				"motion_vectors"
+			],
+			[
+				"outn",
+				"outName2"
+			],
+			[
+				"outN",
+				"outName1"
+			],
+			[
+				"ker",
+				"kernSize"
+			],
+			[
+				"Vide",
+				"VideoCapture"
+			],
+			[
 				"CV_rgb",
 				"CV_RGB2HSV"
 			],
@@ -252,10 +296,10 @@
 	"buffers":
 	[
 		{
-			"file": "test-removeback.py",
+			"file": "pre-appendVid.py",
 			"settings":
 			{
-				"buffer_size": 3289,
+				"buffer_size": 2051,
 				"line_ending": "Unix"
 			}
 		},
@@ -279,15 +323,31 @@
 			"file": "detect_people.py",
 			"settings":
 			{
-				"buffer_size": 2633,
+				"buffer_size": 4275,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": ".gitignore",
+			"file": "pre-rmBack.py",
 			"settings":
 			{
-				"buffer_size": 615,
+				"buffer_size": 3850,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "post-paintVectors.py",
+			"settings":
+			{
+				"buffer_size": 2007,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/home/greg/420seg/segment.cpp",
+			"settings":
+			{
+				"buffer_size": 10530,
 				"line_ending": "Unix"
 			}
 		}
@@ -316,9 +376,10 @@
 	},
 	"file_history":
 	[
+		"/home/greg/420seg/segThresh.cpp",
 		"/home/greg/compv/.gitignore",
-		"/home/greg/compv/compv.sublime-project",
 		"/home/greg/compv/compv.sublime-workspace",
+		"/home/greg/compv/compv.sublime-project",
 		"/home/greg/420seg/segmentation.sublime-project",
 		"/home/greg/.config/sublime-text-2/Packages/Default/Preferences.sublime-settings",
 		"/home/greg/.cache/.fr-JhhdGc/split-channels/src/main.cpp",
@@ -374,6 +435,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"motion_vec",
+			"resize",
+			"out",
+			"sys.argv",
 			"* imThresh",
 			"imThresh->",
 			"* imThresh",
@@ -470,7 +535,7 @@
 			"delimiter"
 		],
 		"highlight": true,
-		"in_selection": true,
+		"in_selection": false,
 		"preserve_case": false,
 		"regex": false,
 		"replace_history":
@@ -507,23 +572,23 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 5,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "test-removeback.py",
+					"file": "pre-appendVid.py",
 					"settings":
 					{
-						"buffer_size": 3289,
+						"buffer_size": 2051,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								668,
-								668
+								1405,
+								1405
 							]
 						],
 						"settings":
@@ -532,7 +597,7 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 905.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -595,15 +660,15 @@
 					"file": "detect_people.py",
 					"settings":
 					{
-						"buffer_size": 2633,
+						"buffer_size": 4275,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								3504,
+								3504
 							]
 						],
 						"settings":
@@ -619,26 +684,81 @@
 				},
 				{
 					"buffer": 4,
-					"file": ".gitignore",
+					"file": "pre-rmBack.py",
 					"settings":
 					{
-						"buffer_size": 615,
+						"buffer_size": 3850,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								0,
-								0
+								1142,
+								1142
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "post-paintVectors.py",
+					"settings":
+					{
+						"buffer_size": 2007,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								682,
+								682
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 385.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/home/greg/420seg/segment.cpp",
+					"settings":
+					{
+						"buffer_size": 10530,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								9916,
+								9916
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/C++/C++.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 6685.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
