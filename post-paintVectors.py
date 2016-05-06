@@ -1,5 +1,5 @@
 # ---------------------------------------------------------
-# author: Greg Linkowski
+# authors: Mohammad Saad & Greg Linkowski
 # project: Anomoly Detection
 #		for Computer Vision final project
 # 
@@ -24,18 +24,23 @@ import math
 ####### ####### ####### ####### 
 # PARAMETERS
 
-inVidName = 'mntl01.MTS'
-inVidDir = 'MNTL/'
+# # Source file name (assuming all pre-proc is done)
+# inVidName = 'mntl02.MTS'
+# inVidDir = 'MNTL/'
 
+# Vectors longer than this will be ignored
+mvThreshold = 100
+
+# Color to draw the vectors on the frame
 #drawColor = (128, 255, 64)
 #drawColor = (180, 20, 200)
 #drawColor = (255, 0, 255)
-drawColor = (0, 192, 255)
+mvColor = (0, 192, 255)
 
 
-mvSuffix = '-vectors.txt'
-inVidFile = inVidDir + inVidName
-mvFile = inVidDir + inVidName.split('.')[0] + mvSuffix
+# mvSuffix = '-vectors.txt'
+# inVidFile = inVidDir + inVidName
+# mvFile = inVidDir + inVidName.split('.')[0] + mvSuffix
 
 ####### ####### ####### ####### 
 
@@ -44,6 +49,14 @@ mvFile = inVidDir + inVidName.split('.')[0] + mvSuffix
 ####### ####### ####### ####### 
 # BEGIN MAIN FUNCTION
 print("")
+
+
+if len(sys.argv < 2) :
+	print("ERROR: $ python pre-rmBack.py <video path & name>")
+#end if
+
+inVidFile = sys.argv[1]
+mvFile = inVidFile[0:-3] + '-vectors.txt'
 
 
 # Skip first N frames of video, then keep a still
@@ -62,26 +75,25 @@ with open(mvFile, 'r') as fin :
 		line = line.rstrip()
 		lv = line.split('\t')
 #		print lv
-		if (float(lv[2]) > 200) :	continue
+		if (float(lv[2]) > mvThreshold) :	continue
 		cv2.circle(stillFrame, (int(lv[0]), int(lv[1])),
-			6, drawColor, 6)
+			6, mvColor, 6)
 		x2 = int(lv[0]) + float(lv[2])*math.cos(float(lv[3]))
 		x2 = int(round(x2))
 		y2 = int(lv[1]) + float(lv[2])*math.sin(float(lv[3]))
 		y2 = int(round(y2))
 #		print x2, y2
 		cv2.line(stillFrame, (int(lv[0]), int(lv[1])),
-			(x2, y2), drawColor, 4)
-
+			(x2, y2), mvColor, 4)
 		# cv2.line(stillFrame, (int(lv[0]), int(lv[1])),
 		# 	(int(lv[4]), int(lv[5])), (64,192,0), 4)
 #end with
 
 
 # Display image (buggy)
-# cv2.imshow("still", stillFrame);
-# cv2.waitKey(0)
-# cv2.destroyAllWindows()
+cv2.imshow("still", stillFrame);
+cv2.waitKey(0)
+cv2.destroyAllWindows()
 
 
 # Output the image
