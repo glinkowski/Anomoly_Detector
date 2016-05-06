@@ -24,7 +24,7 @@ hog = cv2.HOGDescriptor()
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 
-skipFPS = 10		# how many fps to keep
+skipFPS = 6		# how many fps to keep
 outPrefix = sys.argv[1].split('-')[0]
 outVName = outPrefix + '-tracking.avi'
 out = cv2.VideoWriter(outVName, cv2.cv.CV_FOURCC('M','P','4','V'), skipFPS, (inWidth,inHeight), True)
@@ -37,11 +37,14 @@ people_history  = {}
 count = 0
 skipCount = 0
 skipStop = int(round(30 / skipFPS))
-motion_vectors = []
+#motion_vectors = []
+mvList = list()
+mvRow = list()
 while inVid.isOpened():
 
 	# Skipping so many frames per second
 	if (skipCount < skipStop) :
+		ret, frame = inVid.read()
 		skipCount += 1
 		continue
 	skipCount = 0
@@ -93,28 +96,31 @@ while inVid.isOpened():
 						prev_center = centroid_calc(prev_pick[j])
 						dists.append(distance(center, prev_center))
 
-					
 					# find prev square with minimum distance
 					dists = np.array(dists)
 					min_rect = np.argmin(dists)
 
 					# find motion vector
 					displacement = (center[0] - centroid_calc(prev_pick[min_rect])[0],center[1] - centroid_calc(prev_pick[min_rect])[1])
-					motion_vectors.append(displacement)
+#					motion_vectors.append(displacement)
 					
 					# append centroid
-					motion_vectors.append(center)
+#					motion_vectors.append(center)
 
 					# calculate magnitude
 					mag = magnitude(displacement)
-					motion_vectors.append(mag)
+#					motion_vectors.append(mag)
 
 					# calculate angle
 					angle = np.arctan2(displacement[1], displacement[0])
-					motion_vectors.append(angle)
+#					motion_vectors.append(angle)
 
 					# delete previous value, as we have found its match
 					np.delete(prev_pick, min_rect)
+
+					# Save this motion vector to list
+					mvRow = [prev_center[0], prev_center[1], mag, angle, center[0], center[1]]
+					mvList.append(mvRow)
 
 		# set current to previous
 		prev_pick = pick
@@ -122,7 +128,6 @@ while inVid.isOpened():
 		for (xA, yA, xB, yB) in pick:
 			cv2.rectangle(frame, (xA,yA), (xB,yB), (0,255,0), 2)
 
-		
 
 		out.write(frame)
 
@@ -135,11 +140,28 @@ while inVid.isOpened():
 inVid.release()
 out.release()
 
-print motion_vectors
+#print motion_vectors
+#print mvList
 
 outFName = outPrefix + '-vectors.txt'
-#with open(sys.argv[3], 'w') as f:
-with open(outFName, 'w') as f:
-	for i in range(0, len(motion_vectors)):
-		f.write("{0},{1},{2},{3},{4}\n".format(motion_vectors[i][0], motion_vectors[i][1],motion_vectors[i][2],motion_vectors[i][3],motion_vectors[i][4]))
-f.close()
+with open(outFName, 'w') as fout :
+	firstLine = True
+	for row in mvList :
+		if firstLine == True :
+			firstLine = False
+		else :
+			fout.write("\n")
+		#end if
+		fout.write("{}\t{}\t{}\t{}\t{}\t{}".format(row[0],
+			row[1], row[2], row[3], row[4], row[5]))
+#end with
+
+# outFName = outPrefix + '-vectors.txt'
+# #with open(sys.argv[3], 'w') as f:
+# with open(outFName, 'w') as f:
+# 	for i in range(0, len(motion_vectors)):
+# 		f.write("{0},{1},{2},{3},{4}\n".format(motion_vectors[i][0], motion_vectors[i][1],motion_vectors[i][2],motion_vectors[i][3],motion_vectors[i][4]))
+# f.close()
+
+
+print("\nDone.\n")
