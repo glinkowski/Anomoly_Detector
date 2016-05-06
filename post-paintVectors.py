@@ -23,7 +23,7 @@ import numpy as np
 ####### ####### ####### ####### 
 # PARAMETERS
 
-inVidName = 'mntl02.MTS'
+inVidName = 'mntl01.MTS'
 inVidDir = 'MNTL/'
 
 mvSuffix = '-vectors.txt'
@@ -56,7 +56,7 @@ with open(mvFile, 'r') as fin :
 		line = line.rstrip()
 		lv = line.split('\t')
 #		print lv
-		if (float(lv[2]) > 300) :	continue
+		if (float(lv[2]) > 200) :	continue
 		cv2.circle(stillFrame, (int(lv[0]), int(lv[1])),
 			6, (64,192,0), 6)
 		cv2.line(stillFrame, (int(lv[0]), int(lv[1])),
