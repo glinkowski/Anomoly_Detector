@@ -33,8 +33,10 @@ timeThrow = 0.0
 timeKeep = 0.0
 
 # size of the morphology kernel
-kernSize = 3
-kernType = cv2.MORPH_DILATE
+kernSize = 5
+#kernType = cv2.MORPH_DILATE
+#kernType = cv2.MORPH_OPEN
+kernType = cv2.MORPH_CLOSE
 
 # if isColor is False, convert to grayscale
 isColor = True
