@@ -234,6 +234,6 @@ with open(outFName, 'w') as fout :
 
 
 ttotal = (time.time() - tstart)/60
-print("\n    {0.3f} minutes".format(ttotal))
+print("\n    {:1.3f} minutes".format(ttotal))
 
 print("\nDone.\n")
