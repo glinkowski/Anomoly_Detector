@@ -7,13 +7,20 @@
 #	Track those people to create motion vectors. Save the
 #	video with rectangles overlaid. Save the vectors to
 #	a text file (x, y, magnitude, angle).
+#
 # 
+# Use ----
+#	...$ python detect_people.py <input video>
+#
+#
 # Input ----
 #	processed video of location (background removed)
 #
 # Output ----
-#	processed video with rectangles overlaid
-#	text file of vectors
+#	<inVid name>-tracked.avi
+#			processed video with rectangles overlaid
+#	<inVid name>-vectors.txt
+#			text file of vectors
 # ---------------------------------------------------------
 
 import numpy as np
@@ -45,14 +52,19 @@ def centroid_calc(rect):
 # PARAMETERS
 
 # Set slower FPS -- skip X frames per second
-outFPS = 3		# the final fps (should divide 30)
+outFPS = 2		# the final fps (should divide 30)
 
 # Output video compression code
 compression = cv2.cv.CV_FOURCC('M','P','4','V')
 #compression = cv2.cv.CV_FOURCC('M','J','P','G')
 
+# Limit the maximum size of the detections
+#   ie: if rect height > rectThresh, ignore
+rectThresh = 200
+
 # Output color of rectangles drawn on video
 rectColor = (0,255,0)
+
 
 ####### ####### ####### ####### 
 
@@ -64,11 +76,13 @@ inHeight = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
 
 
 hog = cv2.HOGDescriptor()
+#hog = cv2.HOGDescriptor(nLevels=4)
 hog.setSVMDetector(cv2.HOGDescriptor_getDefaultPeopleDetector())
 
 
 #outFPS = 6		# how many fps to keep
-outPrefix = sys.argv[1].split('-')[0]
+outPrefix = sys.argv[1][0:-4]
+#outPrefix = sys.argv[1].split('-')[0]
 outVName = outPrefix + '-tracking.avi'
 out = cv2.VideoWriter(outVName, compression, outFPS, (inWidth,inHeight), True)
 #out = cv2.VideoWriter(sys.argv[2], cv2.cv.CV_FOURCC('M','J','P','G'), 30.0, (640,480), True)
@@ -98,8 +112,8 @@ while inVid.isOpened():
 	#  	count += 1
 	#  	continue
 
-	if not (count % 25) :
-		print("processed: {}".format(count))
+	if not (count % 10) :
+		print("processed: {} --------".format(count))
 	#end if
 
 	ret, frame = inVid.read()
@@ -108,10 +122,14 @@ while inVid.isOpened():
 
 #		frame = cv2.resize(frame, (640,480))
 
-#		 if count % 5 == 0: # process every 5 frames for speed up
-		(rects, weights) = hog.detectMultiScale(frame, winStride=(4,4), padding=(8,8), scale=1.10)
+		# (rects, weights) = hog.detectMultiScale(frame,
+		# 	winStride=(4,4), padding=(8,8), scale=1.10)
+		(rects, weights) = hog.detectMultiScale(frame,
+			winStride=(4,4), padding=(8,8), scale=1.05)
 
-		rects = np.array([[x,y,x+w,y+h] for (x,y,w,h) in rects])
+
+#		rects = np.array([[x,y,x+w,y+h] for (x,y,w,h) in rects])
+		rects = np.array([[x,y,x+w,y+h] for (x,y,w,h) in rects if (h < rectThresh)])
 		pick = non_max_suppression(rects, probs = None, overlapThresh = 0.65)
 		
 		# extract motion vectors if there are previous picks
@@ -127,9 +145,7 @@ while inVid.isOpened():
 				# calculate centroid of current person
 				center = centroid_calc(pick[i])
 
-				# print center
-
-				print "center: {0},{1}".format(center[0], center[1])
+				print("  center: {0},{1}".format(center[0], center[1]))
 				# if no other picks left in prev_pick, skip (i.e. we have a new person)
 				if(len(prev_pick) == 0):
 					continue
