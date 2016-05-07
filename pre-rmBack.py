@@ -6,12 +6,16 @@
 # Testing the idea of subtracting out the background
 #	NOTE: the background should be static
 # 
+#
 # Use ----
 #	...$ python pre-rmBack.py <input video>
 #
+#
 # Output ----
-#	<invideo>-rmBack01.avi: the binary back/fore-ground mask
-#	<invideo>-rmBack02-k<kernel>.avi: the masked video
+#	<invideo>-rmBack01.avi
+#			the binary back/fore-ground mask
+#	<invideo>-rmBack02-k<kernel>.avi
+#			the masked video
 # ---------------------------------------------------------
 
 import cv2
@@ -29,7 +33,8 @@ timeThrow = 0.0
 timeKeep = 0.0
 
 # size of the morphology kernel
-kernSize = 5
+kernSize = 3
+kernType = cv2.MORPH_DILATE
 
 # if isColor is False, convert to grayscale
 isColor = True
@@ -66,21 +71,14 @@ print("original video resolution = {}x{}".format(inWidth, inHeight))
 
 
 # Initialize output video (for linux/mac, h.264 code is MP4V)
-#outVid1 = cv2.VideoWriter('rmBack01.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), False)
-#outVid2 = cv2.VideoWriter('rmBack02.avi', cv2.cv.CV_FOURCC('M','J','P','G'), 30, (640,480), isColor)
-
-
-#outPrefix = sys.argv[1].split('.')[0]
 outPrefix = sys.argv[1][0:-4]
-#print sys.argv[1].split('.')
-#print outPrefix
 outName1 = outPrefix + '-rmBack01.avi'
 outName2 = outPrefix + '-rmBack02-k{}.avi'.format(kernSize)
 if resize :
-	outVid1 = cv2.VideoWriter(outName1, compression, 30, (rWidth,rHeight), False)
+	outVid1 = cv2.VideoWriter(outName1, compression, 30, (rWidth,rHeight), isColor)
 	outVid2 = cv2.VideoWriter(outName2, compression, 30, (rWidth,rHeight), isColor)
 else :
-	outVid1 = cv2.VideoWriter(outName1, compression, 30, (inWidth,inHeight), False)
+	outVid1 = cv2.VideoWriter(outName1, compression, 30, (inWidth,inHeight), isColor)
 	outVid2 = cv2.VideoWriter(outName2, compression, 30, (inWidth,inHeight), isColor)
 #end if	
 
@@ -96,9 +94,9 @@ while count <= numThrow:
 
 
 
-#bgnd = cv2.BackgroundSubtractorMOG()
-bgnd = cv2.BackgroundSubtractorMOG2()
-#bgnd = cv2.BackgroundSubtractorGMG()
+#bgnd = cv2.BackgroundSubtractorMOG() # okay
+bgnd = cv2.BackgroundSubtractorMOG2() # much better
+#bgnd = cv2.BackgroundSubtractorGMG() # worse
 morphKern = np.ones((kernSize, kernSize),np.uint8)
 
 count = 0
@@ -124,32 +122,41 @@ while inVid.isOpened():
 			frame = cv2.cvtColor(frame, cv2.COLOR_RGB2GRAY)
 		#end if
 
+
 		bgmask = bgnd.apply(frame, learningRate=0.003) 
-		bgopen = cv2.morphologyEx(bgmask, cv2.MORPH_OPEN, morphKern)
+		bgopen = cv2.morphologyEx(bgmask, kernType, morphKern)
+#		bgopen = cv2.morphologyEx(bgmask, cv2.MORPH_OPEN, morphKern)
+#		bgopen = cv2.morphologyEx(bgmask, cv2.MORPH_CLOSE, morphKern)
+#		bgopen = cv2.morphologyEx(bgmask, cv2.MORPH_DILATE, morphKern)
 
 		outVid1.write(bgmask)
-#		outVid1.write(bgopen)
+		outVid2.write(bgopen)
 
+
+		# Save colorized versions of bgmask & morphology
 		# Scale bgmask to [0, 1] to black out frame
-#		bgmask = np.divide(bgmask, 255)
 		bgopen = np.divide(bgopen, 255)
+		bgmask2 = np.divide(bgmask, 255)
 		if isColor :
+			frame1 = np.zeros(frame.shape, dtype=np.uint8)
 			frame2 = np.zeros(frame.shape, dtype=np.uint8)
 			for i in xrange(3) :
-#				frame2[:,:,i] = np.multiply(frame[:,:,i], bgmask)
+				frame1[:,:,i] = np.multiply(frame[:,:,i], bgmask2)
 				frame2[:,:,i] = np.multiply(frame[:,:,i], bgopen)
 		else :
-#			frame2 = np.multiply(frame, bgmask)
+			frame1 = np.multiply(frame, bgmask2)
 			frame2 = np.multiply(frame, bgopen)
 		#end if
+		outVid1.write(frame1)
 		outVid2.write(frame2)
 
 	else :
 		break
 	#end if
-
 #end loop
 
+
+# Free your mind
 inVid.release()
 outVid1.release()
 outVid2.release()
