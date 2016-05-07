@@ -28,6 +28,7 @@ import cv2
 import sys
 from imutils.object_detection import non_max_suppression
 from math import sqrt
+import time
 
 
 
@@ -67,6 +68,14 @@ rectColor = (0,255,0)
 
 
 ####### ####### ####### ####### 
+
+
+
+####### ####### ####### ####### 
+# BEGIN MAIN FUNCTION
+print("")
+
+tstart = time.time()
 
 
 
@@ -223,5 +232,8 @@ with open(outFName, 'w') as fout :
 # 		f.write("{0},{1},{2},{3},{4}\n".format(motion_vectors[i][0], motion_vectors[i][1],motion_vectors[i][2],motion_vectors[i][3],motion_vectors[i][4]))
 # f.close()
 
+
+ttotal = (time.time() - tstart)/60
+print("\n    {0.3f} minutes".format(ttotal))
 
 print("\nDone.\n")
