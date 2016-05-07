@@ -54,7 +54,7 @@ def centroid_calc(rect):
 # PARAMETERS
 
 # Set slower FPS -- skip X frames per second
-outFPS = 2		# the final fps (should divide 30)
+outFPS = 3		# the final fps (should divide 30)
 
 # Output video compression code
 compression = cv2.cv.CV_FOURCC('M','P','4','V')
