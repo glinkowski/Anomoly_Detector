@@ -106,6 +106,7 @@ while inVid.isOpened():
 		continue
 	skipCount = 0
 
+#TODO: Skip first 2-3 seconds (adjust for outFPS)
 	# # Skip initial frames (as bgsubtract sets up)
 	#  if(count < 30): 
 	#  	ret, frame = video.read()
