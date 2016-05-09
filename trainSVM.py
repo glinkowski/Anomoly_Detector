@@ -200,7 +200,7 @@ cfier.fit(trData, trLabels)
 
 #SVC(kernel='rbf', )
 
-joblib.dump(cfier, vDir + 'classifier.pkl')
+joblib.dump(cfier, vDir + 'SVM/classifier.pkl')
 
 #NOTE: to call later:
 #	cfier = joblib.load(vDir + 'classifier.pkl')
