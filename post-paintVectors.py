@@ -29,7 +29,7 @@ import math
 # inVidDir = 'MNTL/'
 
 # Vectors longer than this will be ignored
-mvThreshold = 100
+mvThreshold = 2000
 
 # Color to draw the vectors on the frame
 #drawColor = (128, 255, 64)

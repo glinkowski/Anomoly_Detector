@@ -53,7 +53,7 @@ def centroid_calc(rect):
 # PARAMETERS
 
 # Set slower FPS -- skip X frames per second
-outFPS = 2		# the final fps (should divide 30)
+outFPS = 3		# the final fps (should divide 30)
 
 # Output video compression code
 compression = cv2.cv.CV_FOURCC('M','P','4','V')
@@ -135,7 +135,7 @@ while inVid.isOpened():
 		# (rects, weights) = hog.detectMultiScale(frame,
 		# 	winStride=(4,4), padding=(8,8), scale=1.10)
 		(rects, weights) = hog.detectMultiScale(frame,
-			winStride=(4,4), padding=(8,8), scale=1.05)
+			winStride=(4,4), padding=(8,8), scale=1.04)
 
 
 #		rects = np.array([[x,y,x+w,y+h] for (x,y,w,h) in rects])
