@@ -93,10 +93,13 @@ cfier = joblib.load(svmFile)
 
 for i in xrange(mVectors.shape[0]) :
 	mVectors[i,4] = cfier.predict(mVectors[i,0:4])
-#	print cfier.predict(mVectors[i,0:4])
+#	print(cfier.predict(mVectors[i,0:4]))
 #	print mVectors[i,0:4], mVectors[i,4]
 #end loop
 #print(mVectors)
+print("positives: {}, negatives: {}".format( 
+	np.sum(mVectors[:,4]),
+	len(mVectors[:,4]) - np.sum(mVectors[:,4]) ))
 
 
 # Draw the vectors onto the still
