@@ -24,7 +24,7 @@
 
 import numpy as np
 import sys
-from os import listdir
+import os
 import random
 from sklearn import svm
 from sklearn.externals import joblib
@@ -35,8 +35,8 @@ from sklearn.externals import joblib
 # PARAMETERS
 
 # whether to augment the vectors
-augPos = True
 augNeg = True
+augPos = False
 
 # image dimensions
 iwidth = 1920
@@ -45,7 +45,10 @@ iheight = 1080
 # limits on the vector magnitude
 magMax = 150
 magMin = 15
-magFlux = 15
+magFlux = 40
+
+# SVM properties
+svmKernel = 'poly'
 
 ####### ####### ####### ####### 
 
@@ -62,7 +65,7 @@ vDir = sys.argv[1]
 if not vDir.endswith('/') :
 	vDir = vDir + '/'
 
-vFiles = [(vDir + f) for f in listdir(vDir) if f.endswith('.txt')]
+vFiles = [(vDir + f) for f in os.listdir(vDir) if f.endswith('.txt')]
 vFiles.sort()
 
 
@@ -111,6 +114,7 @@ if augNeg :
 	# discard obvious nonsense
 	capNeg = trNeg[(trNeg[:,2] <= (magMax * 4)), :]
 
+
 	# horizontal flip
 	augA = np.copy(capNeg)
 	augA[:,0] = np.subtract(iwidth, augA[:,0])
@@ -120,7 +124,8 @@ if augNeg :
 	augB[:,2] = np.zeros((augB.shape[0]))
 
 	# concatenate to the original vector list
-	trNeg = np.vstack((capNeg, augA, augB))
+	# trNeg = np.vstack((capNeg, augA, augB))
+	trNeg = np.vstack((trNeg, augA, augB))
 #	trNeg = np.copy(augA)
 	# save to file
 	with open(vDir + 'negAugs.txt', 'w') as fout :
@@ -150,11 +155,12 @@ if augPos :
 	augC = np.copy(capPos)
 	for r in xrange(augA.shape[0]) :
 
-		xrand = random.randint(-11, 11)
-		yrand = random.randint(-11, 11)
+		xrand = random.randint(-19, 19)
+		yrand = random.randint(-19, 19)
 		mrand = random.randint(-magFlux, magFlux)
-		arand = random.randint(-9, 9) * 0.002
+		arand = random.randint(-9, 9) * 0.004
 
+	#TODO: vectorize this!
 #		print augA[r,:]
 		augC[r,0] += xrand
 		augC[r,1] += yrand
@@ -167,10 +173,14 @@ if augPos :
 
 	#end loop
 
+	# some minimum (non-zero) vectors
+	augD = np.copy(capPos)
+	augD[:,2] = np.minimum(magMin, augD[:,2])
+
 	# concatenate to the original vector list
 	trPos = np.vstack((capPos, augC))
 
-	print np.amax(trPos, axis=0)
+#	print np.amax(trPos, axis=0)
 
 	# save to file
 	with open(vDir + 'posAugs.txt', 'w') as fout :
@@ -188,6 +198,9 @@ if augPos :
 
 
 # Train the SVM
+print("Training the classifier ...")
+print("    positives: {}, negatives: {}".format( 
+	trNeg.shape[0], trPos.shape[0]),
 trData = np.vstack((trNeg, trPos))
 #print trData.shape, (trNeg.shape[0] + trPos.shape[0])
 # labels = 0,1 
@@ -195,11 +208,14 @@ trLabels = np.vstack(( np.zeros((trNeg.shape[0],1)),
 	np.ones((trPos.shape[0],1)) ))
 trLabels = np.ravel(trLabels)
 #print trLabels.shape
-cfier = svm.SVC()
+cfier = svm.SVC(kernel=svmKernel)#, degree=3, gamma=4)
 cfier.fit(trData, trLabels)
 
-#SVC(kernel='rbf', )
 
+print("Saving the SVM ...")
+if not os.path.exists(vDir + 'SVM/') :
+	os.makedirs(vDir + 'SVM/')
+#end if
 joblib.dump(cfier, vDir + 'SVM/classifier.pkl')
 
 #NOTE: to call later:
