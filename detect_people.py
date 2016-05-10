@@ -191,6 +191,15 @@ while inVid.isOpened():
 				mvRow = [prev_center[0], prev_center[1], mag, angle, center[0], center[1]]
 				mvList.append(mvRow)
 
+				# group detection
+				for i in range(0, len(pick)):
+					for j in range(0, len(pick)):
+						if i == j:
+							continue
+						if(distance < 15):
+							print "group detected"
+
+
 		# set current to previous
 		prev_pick = pick
 		# to save time while running, comment out
