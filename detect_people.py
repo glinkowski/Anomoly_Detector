@@ -191,6 +191,7 @@ while inVid.isOpened():
 				mvRow = [prev_center[0], prev_center[1], mag, angle, center[0], center[1]]
 				mvList.append(mvRow)
 
+
 		# set current to previous
 		prev_pick = pick
 		# to save time while running, comment out
