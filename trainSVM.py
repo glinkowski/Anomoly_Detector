@@ -54,8 +54,8 @@ doGridSearch = True
 # grid search values (where to start?)
 #	meant to be used with rbf
 svmParams = { #'kernel':('rbf', 'linear'), 
-			'C':(0.001, 0.01, 0.01, 1, 10),
-			'gamma':(0.00025, 0.0025, 0.025, 0.25, 2.5, 25)}
+			'C':(0.01, 0.01, 1, 10),
+			'gamma':(0.00025, 0.0025, 0.025, 0.25, 2.5)}
 
 ####### ####### ####### ####### 
 
