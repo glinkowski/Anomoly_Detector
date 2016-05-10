@@ -36,7 +36,7 @@ from sklearn.externals import joblib
 
 # whether to augment the vectors
 augNeg = True
-augPos = False
+augPos = True
 
 # image dimensions
 iwidth = 1920
@@ -158,19 +158,22 @@ if augPos :
 		xrand = random.randint(-19, 19)
 		yrand = random.randint(-19, 19)
 		mrand = random.randint(-magFlux, magFlux)
-		arand = random.randint(-9, 9) * 0.004
+#		arand = random.randint(-9, 9) * 0.004
 
 	#TODO: vectorize this!
-#		print augA[r,:]
 		augC[r,0] += xrand
 		augC[r,1] += yrand
-#		print augA[r,2]
 		augC[r,2] += mrand
-#		print augA[r,2]
 		augC[r,2] = max(augC[r,2], magMin)
 #		augC[r,2] = min(augC[r,2], 150)
-		augC[r,3] += arand
+#		augC[r,3] += arand
 
+		# flip the angle
+		if augC[r,3] >= 0 :
+			augC[r,3] = augC[r,3] - 3.14159
+		else :
+			augC[r,3] = augC[r,3] + 3.14159
+		#end if
 	#end loop
 
 	# some minimum (non-zero) vectors
