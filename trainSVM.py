@@ -26,7 +26,7 @@ import numpy as np
 import sys
 import os
 import random
-from sklearn import svm
+from sklearn import svm, grid_search
 from sklearn.externals import joblib
 
 
@@ -43,12 +43,19 @@ iwidth = 1920
 iheight = 1080
 
 # limits on the vector magnitude
-magMax = 150
+magMax = 100
 magMin = 15
 magFlux = 40
 
 # SVM properties
-svmKernel = 'poly'
+svmKernel = 'rbf'
+doGridSearch = True
+
+# grid search values (where to start?)
+#	meant to be used with rbf
+svmParams = { #'kernel':('rbf', 'linear'), 
+			'C':(0.001, 0.01, 0.01, 1, 10),
+			'gamma':(0.00025, 0.0025, 0.025, 0.25, 2.5, 25)}
 
 ####### ####### ####### ####### 
 
@@ -181,7 +188,7 @@ if augPos :
 	augD[:,2] = np.minimum(magMin, augD[:,2])
 
 	# concatenate to the original vector list
-	trPos = np.vstack((capPos, augC))
+	trPos = np.vstack((capPos, augC, augD))
 
 #	print np.amax(trPos, axis=0)
 
@@ -200,10 +207,10 @@ if augPos :
 #end if
 
 
-# Train the SVM
+# Prep the Training Data
 print("Training the classifier ...")
 print("    positives: {}, negatives: {}".format( 
-	trNeg.shape[0], trPos.shape[0]),
+	trPos.shape[0], trNeg.shape[0]))
 trData = np.vstack((trNeg, trPos))
 #print trData.shape, (trNeg.shape[0] + trPos.shape[0])
 # labels = 0,1 
@@ -211,15 +218,29 @@ trLabels = np.vstack(( np.zeros((trNeg.shape[0],1)),
 	np.ones((trPos.shape[0],1)) ))
 trLabels = np.ravel(trLabels)
 #print trLabels.shape
-cfier = svm.SVC(kernel=svmKernel)#, degree=3, gamma=4)
-cfier.fit(trData, trLabels)
+#cfier = svm.SVC(kernel=svmKernel)#, degree=3, gamma=4)
 
 
-print("Saving the SVM ...")
+# Train the SVM
 if not os.path.exists(vDir + 'SVM/') :
 	os.makedirs(vDir + 'SVM/')
 #end if
-joblib.dump(cfier, vDir + 'SVM/classifier.pkl')
+if doGridSearch :
+	cfGrid = grid_search.GridSearchCV(svm.SVC(), param_grid=svmParams)
+	cfGrid.fit(trData, trLabels)
+	print("Grid search results:\n  score={}\n  params={}".format(
+		cfGrid.best_score_, cfGrid.best_params_))
+	print("Saving the SVM ...")
+	joblib.dump(cfGrid, vDir + 'SVM/classifier.pkl')
+
+	print(cfGrid.get_params())
+else :
+	cfier=svm.SVC(kernel=svmKernel)#, degree=3, gamma=4)
+	cfier.fit(trData, trLabels)
+	print("Saving the SVM ...")
+	joblib.dump(cfier, vDir + 'SVM/classifier.pkl')
+#end if
+
 
 #NOTE: to call later:
 #	cfier = joblib.load(vDir + 'classifier.pkl')
