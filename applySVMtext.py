@@ -75,7 +75,7 @@ ret, stillFrame = inVid.read()
 
 
 # Read in the vectors
-mVectors = np.zeros((0,5), dtype=np.float32)
+mVectors = np.zeros((0,5), dtype=np.float64)
 with open(mvFile, 'r') as fin :
 	for line in fin :
 		line = line.rstrip()
@@ -110,13 +110,15 @@ for i in xrange(mVectors.shape[0]) :
 		mvColor = (0, 0, 255)
 	#end if
 
-#	print int(mVectors[i,0]), int(mVectors[i,1])
-	cv2.circle(stillFrame, (int(mVectors[i,0]), int(mVectors[i,1])),
-		6, mvColor, 6)
+	x1 = int(mVectors[i,0])
+	y1 = int(mVectors[i,1])
 
-	x2 = mVectors[i,0] + mVectors[i,0] * math.cos(mVectors[i,3])
+#	print int(mVectors[i,0]), int(mVectors[i,1])
+	cv2.circle(stillFrame, (x1, y1), 6, mvColor, 6)
+
+	x2 = x1 + (mVectors[i,2] * math.cos(mVectors[i,3]))
 	x2 = int(round(x2))
-	y2 = mVectors[i,1] + mVectors[i,1] * math.sin(mVectors[i,3])
+	y2 = y1 + (mVectors[i,2] * math.sin(mVectors[i,3]))
 	y2 = int(round(y2))
 	cv2.line(stillFrame, (int(mVectors[i,0]), int(mVectors[i,1])),
 		(x2, y2), mvColor, 4)
@@ -132,6 +134,21 @@ cv2.destroyAllWindows()
 # Output the image
 #cv2.imwrite( inVidDir + inVidName.split('.')[0] + '-still.png', stillFrame )
 cv2.imwrite( inVidFile[0:-4] + '-labeled.png', stillFrame )
+
+
+# Save the vectors to file
+outFName = inVidFile[0:-4] + '-vLabelled.txt'
+with open(outFName, 'w') as fout :
+	firstLine = True
+	for row in mVectors :
+		if firstLine == True :
+			firstLine = False
+		else :
+			fout.write("\n")
+		#end if
+		fout.write("{}\t{}\t{}\t{}\t{}".format(row[0],
+			row[1], row[2], row[3], row[4]))
+#end with
 
 
 print("\nDone.\n")
