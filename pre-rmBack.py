@@ -34,7 +34,7 @@ timeThrow = 0.0
 timeKeep = 1.18
 
 # size of the morphology kernel
-kernSize = 2
+kernSize = 4
 #kernType = cv2.MORPH_DILATE
 kernType = cv2.MORPH_OPEN
 #kernType = cv2.MORPH_CLOSE
