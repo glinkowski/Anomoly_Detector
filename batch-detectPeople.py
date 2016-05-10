@@ -62,7 +62,7 @@ compression = cv2.cv.CV_FOURCC('M','P','4','V')
 
 # Limit the maximum size of the detections
 #   ie: if rect height > rectThresh, ignore
-rectThresh = 200
+rectThresh = 2000	# quad = 200
 
 # Output color of rectangles drawn on video
 rectColor = (0,255,0)

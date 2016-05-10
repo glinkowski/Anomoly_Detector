@@ -1,3 +1,4 @@
+
 # ---------------------------------------------------------
 # authors: Mohammad Saad & Greg Linkowski
 # project: Anomoly Detection
@@ -29,8 +30,8 @@ import numpy as np
 
 # time to discard at the beginning (in min)
 timeThrow = 0.0
-# time to keep in final video (in sec)
-timeKeep = 0.0
+# time to keep in final video (in min)
+timeKeep = 1.18
 
 # size of the morphology kernel
 kernSize = 2
