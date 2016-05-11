@@ -132,8 +132,8 @@ while inVid.isOpened():
 #		bgopen = cv2.morphologyEx(bgmask, cv2.MORPH_CLOSE, morphKern)
 #		bgopen = cv2.morphologyEx(bgmask, cv2.MORPH_DILATE, morphKern)
 
-		outVid1.write(bgmask)
-		outVid2.write(bgopen)
+#		outVid1.write(bgmask)
+#		outVid2.write(bgopen)
 
 
 		# Save colorized versions of bgmask & morphology
