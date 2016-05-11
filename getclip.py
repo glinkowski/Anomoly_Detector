@@ -6,6 +6,11 @@
 # Crop & Downsample the video
 #	Downsample both the resoultion and the frames
 # 
+# Use ----
+#	...$ python getclip.py <input video>
+#
+# Output ----
+#	<invideo>-clip.avi
 # ---------------------------------------------------------
 
 import cv2
