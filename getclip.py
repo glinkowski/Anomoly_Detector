@@ -17,9 +17,9 @@ import sys
 # PARAMETERS
 
 # time to discard at the beginning (in min)
-timeThrow = 0.0
+timeThrow = 0.025
 # time to keep in final video (in min)
-timeKeep = 3.16
+timeKeep = 0.925
 
 # FPS for output (should divide 30)
 changeFPS = False
@@ -31,7 +31,8 @@ showProgress = False
 
 
 # if FPS can't be extracted from original
-guessFPS = 60
+guessFPS = 3
+forceFPS = False
 
 # if isColor is False, convert to grayscale
 isColor = True
@@ -61,9 +62,13 @@ if inFPS < 121 :
 else :	# to handle fps = NaN
 	inFPS = guessFPS
 #end if
+if forceFPS :
+	inFPS = guessFPS
+#end if
 if not changeFPS :
 	outFPS = inFPS
 #end if
+print("output video fps = {}".format(outFPS))
 
 inWidth = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_WIDTH))
 inHeight = int(inVid.get(cv2.cv.CV_CAP_PROP_FRAME_HEIGHT))
@@ -80,7 +85,7 @@ else :
 #end if
 
 # Throw out first N frames
-numThrow = int(round(timeThrow * inFPS)) * 60
+numThrow = int(round(timeThrow * inFPS * 60))
 count = 0
 while count <= numThrow:
 	# Get a frame
@@ -92,7 +97,7 @@ while count <= numThrow:
 skipCount = 0
 skipStop = int(round(inFPS / outFPS))
 count = 0
-numKeep = int(round(timeKeep * inFPS)) * 60
+numKeep = int(round(timeKeep * inFPS * 60))
 while inVid.isOpened():
 	count += 1
 
