@@ -62,9 +62,9 @@ vModExt = '-rmBack02-k4.avi'
 vMOutExt = '-rmBack.avi'
 
 # Vectors longer than this will be ignored
-mvThreshold = 300
+mvThreshold = 300	# quad=100, mntl=300
 # Limit the maximum size of the detections
-rectThresh = 500	# quad = 200
+rectThresh = 500	# quad=200, mntl=500
 
 # Set slower FPS -- skip X frames per second
 outFPS = 3		# the final fps (should divide 30)
